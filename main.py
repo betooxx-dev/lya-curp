@@ -17,7 +17,7 @@ class TuringMachine:
         for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
             transitions[('q0', letter)] = ('q1', letter, 'R')
 
-        # Estado q1 - Transiciones para todas las letras (específicas según el diagrama)
+        # Estado q1 - Transiciones para vocales
         for vowel in 'AEIOU':
             transitions[('q1', vowel)] = ('q2', vowel, 'R')
 
@@ -29,7 +29,7 @@ class TuringMachine:
         for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ':
             transitions[('q3', letter)] = ('q5', letter, 'R')
 
-        # Estado q5 - Transiciones para dígitos y letras
+        # Estado q5 - Transiciones para dígitos
         transitions[('q5', '0')] = ('q17', '0', 'R')
         transitions[('q5', '1')] = ('q6', '1', 'R')
         transitions[('q5', '2')] = ('q7', '2', 'R')
@@ -41,53 +41,14 @@ class TuringMachine:
         transitions[('q5', '8')] = ('q13', '8', 'R')
         transitions[('q5', '9')] = ('q14', '9', 'R')
 
-        # Estado q6 a q17 - Transiciones para símbolos específicos
-        transitions[('q6', '2')] = ('q15', '2', 'R')
-        transitions[('q6', '6')] = ('q15', '6', 'R')
-        for sym in '013456789':
-            transitions[('q6', sym)] = ('q16', sym, 'R')
+        # Estado q6 a q14 - Transiciones para el segundo dígito del año
+        for state in range(6, 15):
+            transitions[(f'q{state}', '2')] = ('q15', '2', 'R')
+            transitions[(f'q{state}', '6')] = ('q15', '6', 'R')
+            for sym in '013456789':
+                transitions[(f'q{state}', sym)] = ('q16', sym, 'R')
 
-        transitions[('q7', '2')] = ('q15', '2', 'R')
-        transitions[('q7', '6')] = ('q15', '6', 'R')
-        for sym in '013456789':
-            transitions[('q7', sym)] = ('q16', sym, 'R')
-
-        transitions[('q8', '2')] = ('q15', '2', 'R')
-        transitions[('q8', '6')] = ('q15', '6', 'R')
-        for sym in '013456789':
-            transitions[('q8', sym)] = ('q16', sym, 'R')
-
-        transitions[('q9', '2')] = ('q15', '2', 'R')
-        transitions[('q9', '6')] = ('q15', '6', 'R')
-        for sym in '013456789':
-            transitions[('q9', sym)] = ('q16', sym, 'R')
-
-        transitions[('q10', '2')] = ('q15', '2', 'R')
-        transitions[('q10', '6')] = ('q15', '6', 'R')
-        for sym in '013456789':
-            transitions[('q10', sym)] = ('q16', sym, 'R')
-
-        transitions[('q11', '2')] = ('q15', '2', 'R')
-        transitions[('q11', '6')] = ('q15', '6', 'R')
-        for sym in '013456789':
-            transitions[('q11', sym)] = ('q16', sym, 'R')
-
-        transitions[('q12', '2')] = ('q15', '2', 'R')
-        transitions[('q12', '6')] = ('q15', '6', 'R')
-        for sym in '013456789':
-            transitions[('q12', sym)] = ('q16', sym, 'R')
-
-        transitions[('q13', '2')] = ('q15', '2', 'R')
-        transitions[('q13', '6')] = ('q15', '6', 'R')
-        for sym in '013456789':
-            transitions[('q13', sym)] = ('q16', sym, 'R')
-
-        transitions[('q14', '2')] = ('q15', '2', 'R')
-        transitions[('q14', '6')] = ('q15', '6', 'R')
-        for sym in '013456789':
-            transitions[('q14', sym)] = ('q16', sym, 'R')
-
-        # Estado q15 - Transiciones
+        # Estado q15 - Transiciones para el primer dígito del mes
         transitions[('q15', '0')] = ('q18', '0', 'R')
         for sym in '123456789':
             transitions[('q15', sym)] = ('q19', sym, 'R')
@@ -103,6 +64,18 @@ class TuringMachine:
         for sym in '123567':
             transitions[('q17', sym)] = ('q16', sym, 'R')
 
+        # Estado q4 - Transiciones completas
+        transitions[('q4', '0')] = ('q35', '0', 'R')
+        transitions[('q4', '1')] = ('q35', '1', 'R')
+        transitions[('q4', '2')] = ('q33', '2', 'R')
+        transitions[('q4', '4')] = ('q34', '4', 'R')
+        transitions[('q4', '6')] = ('q34', '6', 'R')
+        transitions[('q4', '9')] = ('q34', '9', 'R')
+        transitions[('q4', '3')] = ('q35', '3', 'R')
+        transitions[('q4', '5')] = ('q35', '5', 'R')
+        transitions[('q4', '7')] = ('q35', '7', 'R')
+        transitions[('q4', '8')] = ('q35', '8', 'R')
+
         # Estado q18 - Transiciones
         transitions[('q18', '2')] = ('q23', '2', 'R')
         transitions[('q18', '4')] = ('q22', '4', 'R')
@@ -115,6 +88,7 @@ class TuringMachine:
         transitions[('q19', '0')] = ('q21', '0', 'R')
         transitions[('q19', '1')] = ('q22', '1', 'R')
         transitions[('q19', '2')] = ('q21', '2', 'R')
+        transitions[('q19', '9')] = ('q21', '9', 'R')
 
         # Estado q20 - Transiciones
         transitions[('q20', '0')] = ('q35', '0', 'R')
@@ -184,32 +158,94 @@ class TuringMachine:
         transitions[('q38', 'H')] = ('q45', 'H', 'R')
         transitions[('q38', 'M')] = ('q45', 'M', 'R')
 
-        # Estado q45 - Transiciones para letras
-        transitions[('q45', 'A')] = ('q46', 'A', 'R')
-        transitions[('q45', 'B')] = ('q47', 'B', 'R')
-        transitions[('q45', 'C')] = ('q48', 'C', 'R')
-        transitions[('q45', 'D')] = ('q49', 'D', 'R')
-        transitions[('q45', 'G')] = ('q50', 'G', 'R')
-        transitions[('q45', 'H')] = ('q51', 'H', 'R')
-        transitions[('q45', 'J')] = ('q52', 'J', 'R')
-        transitions[('q45', 'M')] = ('q53', 'M', 'R')
-        transitions[('q45', 'N')] = ('q54', 'N', 'R')
-        transitions[('q45', 'O')] = ('q55', 'O', 'R')
-        transitions[('q45', 'P')] = ('q56', 'P', 'R')
-        transitions[('q45', 'Q')] = ('q57', 'Q', 'R')
-        transitions[('q45', 'S')] = ('q58', 'S', 'R')
-        transitions[('q45', 'T')] = ('q59', 'T', 'R')
-        transitions[('q45', 'V')] = ('q60', 'V', 'R')
-        transitions[('q45', 'Y')] = ('q61', 'Y', 'R')
-        transitions[('q45', 'Z')] = ('q62', 'Z', 'R')
+        # Estado q45 - Primera letra de la entidad federativa
+        transitions[('q45', 'A')] = ('q46', 'A', 'R')  # AS
+        transitions[('q45', 'B')] = ('q47', 'B', 'R')  # BC, BS
+        transitions[('q45', 'C')] = ('q48', 'C', 'R')  # CC, CL, CM, CS, CH
+        transitions[('q45', 'D')] = ('q49', 'D', 'R')  # DF, DG
+        transitions[('q45', 'G')] = ('q50', 'G', 'R')  # GT, GR
+        transitions[('q45', 'H')] = ('q51', 'H', 'R')  # HG
+        transitions[('q45', 'J')] = ('q52', 'J', 'R')  # JC
+        transitions[('q45', 'M')] = ('q53', 'M', 'R')  # MC, MN, MS
+        transitions[('q45', 'N')] = ('q54', 'N', 'R')  # NT, NL, NE
+        transitions[('q45', 'O')] = ('q55', 'O', 'R')  # OC
+        transitions[('q45', 'P')] = ('q56', 'P', 'R')  # PL
+        transitions[('q45', 'Q')] = ('q57', 'Q', 'R')  # QT, QR
+        transitions[('q45', 'S')] = ('q58', 'S', 'R')  # SP, SL, SR
+        transitions[('q45', 'T')] = ('q59', 'T', 'R')  # TC, TS, TL
+        transitions[('q45', 'V')] = ('q60', 'V', 'R')  # VZ
+        transitions[('q45', 'Y')] = ('q61', 'Y', 'R')  # YN
+        transitions[('q45', 'Z')] = ('q62', 'Z', 'R')  # ZS
 
-        # Estados q46 a q62 - Transiciones a q63
-        for state in range(46, 63):
-            for letter in 'SCLMRTNPFGZ':
-                transitions[(f'q{state}', letter)] = ('q63', letter, 'R')
+        # Transiciones específicas para cada estado según la segunda letra permitida
+        # Estado q46 (A-)
+        transitions[('q46', 'S')] = ('q63', 'S', 'R')  # AS - Aguascalientes
 
-        # Estados q63 a q68 - Transiciones en cadena
-        # q63 -> q64 -> q65 -> q66 -> q67 -> q68
+        # Estado q47 (B-)
+        transitions[('q47', 'C')] = ('q63', 'C', 'R')  # BC - Baja California
+        transitions[('q47', 'S')] = ('q63', 'S', 'R')  # BS - Baja California Sur
+
+        # Estado q48 (C-)
+        transitions[('q48', 'C')] = ('q63', 'C', 'R')  # CC - Campeche
+        transitions[('q48', 'L')] = ('q63', 'L', 'R')  # CL - Coahuila
+        transitions[('q48', 'M')] = ('q63', 'M', 'R')  # CM - Colima
+        transitions[('q48', 'S')] = ('q63', 'S', 'R')  # CS - Chiapas
+        transitions[('q48', 'H')] = ('q63', 'H', 'R')  # CH - Chihuahua
+
+        # Estado q49 (D-)
+        transitions[('q49', 'F')] = ('q63', 'F', 'R')  # DF - Ciudad de México
+        transitions[('q49', 'G')] = ('q63', 'G', 'R')  # DG - Durango
+
+        # Estado q50 (G-)
+        transitions[('q50', 'T')] = ('q63', 'T', 'R')  # GT - Guanajuato
+        transitions[('q50', 'R')] = ('q63', 'R', 'R')  # GR - Guerrero
+
+        # Estado q51 (H-)
+        transitions[('q51', 'G')] = ('q63', 'G', 'R')  # HG - Hidalgo
+
+        # Estado q52 (J-)
+        transitions[('q52', 'C')] = ('q63', 'C', 'R')  # JC - Jalisco
+
+        # Estado q53 (M-)
+        transitions[('q53', 'C')] = ('q63', 'C', 'R')  # MC - Estado de México
+        transitions[('q53', 'N')] = ('q63', 'N', 'R')  # MN - Michoacán
+        transitions[('q53', 'S')] = ('q63', 'S', 'R')  # MS - Morelos
+
+        # Estado q54 (N-)
+        transitions[('q54', 'T')] = ('q63', 'T', 'R')  # NT - Nayarit
+        transitions[('q54', 'L')] = ('q63', 'L', 'R')  # NL - Nuevo León
+        transitions[('q54', 'E')] = ('q63', 'E', 'R')  # NE - Nacido en el Extranjero
+
+        # Estado q55 (O-)
+        transitions[('q55', 'C')] = ('q63', 'C', 'R')  # OC - Oaxaca
+
+        # Estado q56 (P-)
+        transitions[('q56', 'L')] = ('q63', 'L', 'R')  # PL - Puebla
+
+        # Estado q57 (Q-)
+        transitions[('q57', 'T')] = ('q63', 'T', 'R')  # QT - Querétaro
+        transitions[('q57', 'R')] = ('q63', 'R', 'R')  # QR - Quintana Roo
+
+        # Estado q58 (S-)
+        transitions[('q58', 'P')] = ('q63', 'P', 'R')  # SP - San Luis Potosí
+        transitions[('q58', 'L')] = ('q63', 'L', 'R')  # SL - Sinaloa
+        transitions[('q58', 'R')] = ('q63', 'R', 'R')  # SR - Sonora
+
+        # Estado q59 (T-)
+        transitions[('q59', 'C')] = ('q63', 'C', 'R')  # TC - Tabasco
+        transitions[('q59', 'S')] = ('q63', 'S', 'R')  # TS - Tamaulipas
+        transitions[('q59', 'L')] = ('q63', 'L', 'R')  # TL - Tlaxcala
+
+        # Estado q60 (V-)
+        transitions[('q60', 'Z')] = ('q63', 'Z', 'R')  # VZ - Veracruz
+
+        # Estado q61 (Y-)
+        transitions[('q61', 'N')] = ('q63', 'N', 'R')  # YN - Yucatán
+
+        # Estado q62 (Z-)
+        transitions[('q62', 'S')] = ('q63', 'S', 'R')  # ZS - Zacatecas
+
+        # Estados q63 a q68 - Transiciones en cadena para el resto de la CURP
         for state, next_state in [(63, 64), (64, 65), (65, 66), (66, 67), (67, 68)]:
             for sym in '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ':
                 transitions[(f'q{state}', sym)] = (f'q{next_state}', sym, 'R')
