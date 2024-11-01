@@ -378,7 +378,7 @@ class ModernTuringGUI:
             self.update_tape_display()
             self.state_var.set(f"Estado actual: {self.turing_machine.current_state}")
             
-            if self.turing_machine.current_state == 'qf':
+            if self.turing_machine.current_state == 'qf' or self.turing_machine.current_state == 'q18':
                 self.show_success("¡CURP válida!")
             else:
                 self.show_error("CURP inválida")
